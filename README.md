@@ -10,4 +10,4 @@ This application will provide customers with advanced function of managing their
 
 A simple screen sketch for this level.  
 
-![Alt text](https://github.com/ssaatt/pic/blob/master/1.png)
+<img src="https://github.com/ssaatt/pic/blob/master/1.png">
