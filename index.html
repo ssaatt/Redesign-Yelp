@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+		<script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+  		<script type="text/javascript" src="./jquery.transit.js"></script>
+    	<script type="text/javascript" src="./mainjs.js"></script>
+    	<script type="text/javascript" src="./search.js"></script>
+    	<script type="text/javascript" src="./local_storage.js"></script>
+    <!--- 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9bkEUd4rLKk-hb-EKDf8D5JOj4Ff1hUY&sensor=true"></script> --->   	
+    	<script type="text/javascript" src="./GoogleAPI.js"></script>
+    	<link rel="stylesheet" href="./style.css" type="text/css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Chowhounds</title>
+        
+    </head>
+    <body>
+    	<!-- Navigators --> 
+        <div id="header">
+        	<ul class="navbar">
+        		<li><a name="logo" class="logo" href=""> <h1><span class="initial">C</span>HOWHOUNDS</h1> </a></li>
+        		<li><a class="nav" id="nav-favorites"> </a></li>
+        		<li><a class="nav" id="nav-search"> </a></li>
+        		<li><a class="nav" id="nav-compare"> </a></li>
+        		<li><a class="nav" id="nav-doc"> </a></li>
+        	</ul>
+        </div>
+        
+        <!-- MainContainer --> 
+        <div id="maincontainer">
+        	<!-- SearchBox -->
+	        <div id="searchbox" style="display:none">	
+	        	<div id="searchboxcontent">
+	        		<div id="sbutton"> </div>
+	        		<div id="mainquery">
+		        		<div class="stext" id="searchfor"><h2>Search for:</h2></div>
+		        		<div class="stext" id="searchadd"><h2>Near:</h2></div>
+		        		<input class="text" name="search-query" id='queryfield' onkeypress='searchKeyPress(event);' type="text">
+		        		<input class="text" name="search-address" id='addressfield' onkeypress='searchKeyPress(event);' type="text">
+		        	</div>
+
+	        		<div id="searchopt">
+	        		<ul>
+	        			<li>
+	        				<span style="color:#e89a26">Sort Results by </span>
+	        			</li>
+						<li>
+							<input id="sort-match" type="radio" class="styled" checked="checked" value="0" name="sort">
+							<span class="radio-styled"> </span>
+							<span class="radio-txt">Best Matched</span>
+						</li>
+						<li>
+							<input id="sort-rate" type="radio" class="styled" value="2" name="sort">
+							<span class="radio-styled"> </span>
+							<span class="radio-txt">Most High Rated</span>
+						</li>
+						<li>
+							<input id="sort-distance" type="radio" class="styled" value="1" name="sort">
+							<span class="radio-styled"> </span>
+							<span class="radio-txt">Shortest Distance</span>
+						</li>
+						<li>
+							<input id="deal" type="checkbox" class="styled" value="deal" name="deal">
+							<span style="color:#e89a26" class="checkbox-txt">Deals Only</span>
+						</li>
+					</ul>
+					</div>
+	        	</div>	
+	        </div>
+	  
+	        
+	        <!-- CompareBox --> 
+	        <div id="comparebox" style="display:none;">
+	        	<div id="compareboxcontent">
+	        		<div id="cbutton"> Compare Now! </div>
+	        		<div onclick='clearCompareList()' id="clearcomparelist">Clear List</div>
+	        		<div class="cbox" id="comparelistcontainer">
+						
+					</div>
+					<span class="ctext" id="comparelist">Campare List</span>
+	        	</div>
+	        </div>
+	        
+	        
+	        <!-- Content Pages -->
+	        
+	        <!-- Compare Page -->
+	        <div id="compareresults" name="container" class="container">
+	        	<div id='mapcontainer'>
+	        		<span  id='greenpin'><img src='./JBresource/greenpin.png' class='pin'>Current Location</span>
+	        		<span id='redpin'><img src='./JBresource/redpin.png' class='pin'>Restaurant Location</span>
+	        		<h2 id='maptitle' class="head-foot-title">Map.</h2> 
+	        	</div>
+	        	<div id="comparehead" class="head-foot">
+	        		<h2 id='comparetitle' class="head-foot-title">Compare Result.</h2>
+	        	</div>
+	        	<div id="comparecontainer">
+	        		<div id="com1" class='com'> </div>
+	        		<div id="com2" class='com'> </div>
+	        		<div id="com3" class='com'> </div>
+	        		<div id="com4" class='com'> </div>
+	        		<div id="com5" class='com'> </div>
+	        		<div id="com6" class='com'> </div>	
+	        	</div>
+	        </div>
+	        
+	        <!-- Favorite Page --> 
+	        <div id="favoriteresults" name="container" class="container">
+	        	<div id="fav-left-column">
+		        	<div id="sortbox">
+		        		<h3 class="boxtitle" id="sort-boxtitle">Sort By.</h3>
+		        		<ul id="fav-sort-form">
+		        			<li>
+		        				<input id="fav-sort-rate" type="radio" class="styled" value="0" checked="checked" name="fav-sort" onclick="sortFav(favRestaurant,0);refreshFullLayout(favRestaurant);fullFilter(favRestaurant);">
+				        		<span class="radio-txt">Highest Rated</span>
+			        		</li>
+			        		<li>
+				        		<input id="fav-sort-distance" type="radio" class="styled" value="1" name="fav-sort" onclick="sortFav(favRestaurant,1);refreshFullLayout(favRestaurant);fullFilter(favRestaurant);">
+				        		<span class="radio-txt">Nearest</span>
+			        		</li>
+			        		<li>
+				        		<input id="fav-sort-comment" type="radio" class="styled" value="2" name="fav-sort" onclick="sortFav(favRestaurant,2);refreshFullLayout(favRestaurant);fullFilter(favRestaurant);">
+				        		<span class="radio-txt">Most Comments</span>
+			        		</li>
+		        		</ul>
+		        		
+		       	 	</div>
+		       	 	<div id="filterbox">
+	       	 		<h3 class="boxtitle" id="filter-boxtitle">Filter By.</h3>
+	        	
+	        		<ul id="fav-filter-form">
+		       	 		<li>
+	       	 			<h4 class="filtertitle">Rate</h4>
+	   	 				</li>
+		   	 			<div id="filterrate">
+			   	 		
+			   	 		</div>
+		       	 		<li>
+	       	 			<h4 class="filtertitle" id="filtertitle-category">Categories</h4>
+	   	 				</li>
+	   	 				<div id="filtercategory">
+	   	 					
+	   	 				</div>
+	   	 				
+	   	 				<li>
+	       	 			<h4 class="filtertitle" id="filtertitle-tag">My Tags</h4>
+	   	 				</li>
+	   	 				<div id="filtertag">
+	   	 	
+	   	 				</div>
+	   	 				<li>
+	       	 			<h4 class="filtertitle" id="filtertitle-city">Cities</h4>
+	   	 				</li>
+	   	 				<div id="filtercities">
+	   	 					
+	   	 				</div>
+	   	 				<div id="filterend">
+	   	 					
+	   	 				</div>
+	       	 		</ul>
+	       	 	</div>
+	        </div>
+	        	<div id="fav-main-column">
+	        		<div id="fav-head">
+	        			<h2 id="fav-title">My Favorites.</h2>
+	        		</div>
+	        		<div id="fav-content">
+	        			
+	        		</div>
+	        	</div>
+	        </div>
+        
+       		<!-- Search Page -->
+        	<div id="searchresults" name="container" class="container">
+        		<div class="head-foot" id="searchhead">
+        			<h2 class="head-foot-title">Search Results.</h2>
+        			<table class="head-foot-table">
+        				<tr>
+        					<td>
+		        			<span style="float:left" class="head-foot-text"><span style="color:#A9CEE6" id="totalnum"> </span> results in total.</span>
+		        			</td>
+		        			<td style="text-align:center">
+		        			<span style="float:center" class="head-foot-text"> 
+		        			<a style="font-size:16px;" href='#' id="prev">&#60&#60 Prev </a> | <a style="font-size:16px" href='#' id="next"> Next &#62&#62</a>
+							</span> 
+							</td>
+							<!--<a href='#' id="SF">SF</a>
+							<a href='#' id="NY">NY</a>-->
+							<td style="text-align:right">
+							<span align="right"  class="head-foot-text"> Go to Page </span> 
+							<select id="offsetselect"> </select>
+							</td>
+						</tr>	
+					</table>
+        		</div>
+	        	<table id="business-table">
+
+				</table>
+   	
+				<div class="head-foot" id="searchfoot">
+        			<table class="head-foot-table">
+        				<tr>
+        					<td>
+		        			<span style="float:left" class="head-foot-text"><span style="color:#A9CEE6" id="totalnumfoot"> </span> results in total.</span>
+		        			</td>
+		        			<td style="text-align:center">
+		        			<span style="float:center" class="head-foot-text"> 
+		        			<a style="font-size:16px;" href='#' id="prevfoot">&#60&#60 Prev </a> | <a style="font-size:16px" href='#' id="nextfoot"> Next &#62&#62</a>
+							</span> 
+							</td>
+							<!--<a href='#' id="SF">SF</a>
+							<a href='#' id="NY">NY</a>-->
+							<td style="text-align:right">
+							<span align="right"  class="head-foot-text"> Go to Page </span> 
+							<select id="offsetselectfoot"> </select>
+							</td>
+						</tr>	
+					</table>
+        		</div>
+	        </div>
+
+
+ 			<!--Set Location Page-->
+ 			<div id="setlocation" name="container" class="container">
+		 			<h1 style="color:#e89a26;margin-left:-10px;">Set Location.</h1>
+		 		<table id='setloctable' width='1000px'>
+		 			<tr>
+		 				<td>
+			 			<h2 class='settitle'>Select Your Location</h2>
+			 			</td>
+			 			<td>
+			 			<h2 class='settitle'>Or Input Your Location</h2>
+			 			</td>
+			 		</tr>
+			 		<tr>
+			    		<td>
+			    		<select name="AddressSelect" id='AddressSelect' onchange="document.getElementById('Google-address').value=this.value;">
+			    			<option value="Columbia University">Columbia University</option>
+	 						<option value="Time Square">Time Square</option>
+	 						<option value="45 Tiemann Pl. New York, NY, 10027">45 Tiemann Pl. New York, NY, 10027</option>
+			    		</select>
+			    		</td>
+			    		<td>
+			    		<input id="Google-address" type="textbox" value="">
+			    		<div id='appsavbutton' class='tag-button' value="Apply & Save" onclick="addItem();codeAddress();"> Apply&Save </div>
+			    		<div id='appbutton' class='tag-button' value="Apply" onclick="codeAddress();"> Apply </div>
+			    		</td>
+			    	</tr>
+			    	<tr>
+			    		<td><h3 id="current-addr"> </h3></td>
+			    	</tr>
+		  		</table>
+		  		
+	  	    </div>	
+        	<!-- footer -->
+     		<div class="head-foot" id="loadingbox">
+     			<img src="./JBresource/rotate.png" id="loading">
+     		</div>
+	        <div id="footer">
+	        	<span style="color:#aaaaaa;"><a style="color:#E89A26" href="#">Help and Documentation</a><!-- | Powered by <span style="color:#E89A26">Yelp API</span>--></span><br>
+	        	<span style="color:#aaaaaa;">Copyright© 2012-2013 <span style="color:">Chowhounds</span></span>
+
+	        </div>
+        </div>
+
+	  	<!--Others-->
+       	<div id="screen-cover">
+       		<div id="add-dialog">
+       			<input type="radio" name="add-fav-tag" class="styled" checked="checked" value="create">
+       			<span>Add to existing TAGs</span>
+       			<input type="radio" name="add-fav-tag" class="styled" value="custom">
+       			<span>Create and add to a new TAG</span>
+       		</div>
+       	</div>
+       	
+       	<img id='con' src='./JBresource/confi.png'/>
+       	<img id='addedtolist' src='./JBresource/addedtolist.png'/>
+       	<img id='changesaved' src='./JBresource/changesaved.png'/>
+   		<img id='favadded' src='./JBresource/favadded.png'/>
+   		<img id='removed' src='./JBresource/removed.png'/>
+ 		<img id='firstpage' src='./JBresource/firstpage.png'/>
+ 		<img id='lastpage' src='./JBresource/lastpage.png'/>
+ 		<img id='welcome' src='./JBresource/welcome.png'/>
+ 		<img id='welback' src='./JBresource/welback.png'/>
+ 		<img id='exist' src='./JBresource/exist.png'/>
+ 		<img id='validadd' src='./JBresource/validadd.png'/>
+ 		<img id='alcompare' src='./JBresource/alcompare.png'/>
+ 		<img id='full' src='./JBresource/full.png'/>
+ 		<img id='setloc' src='./JBresource/setloc.png' onclick='ShowSetLocation();'/>
+   		<div id="map_canvas" style='width:600px;height:400px;'></div> 	
+    </body>
+</html>
