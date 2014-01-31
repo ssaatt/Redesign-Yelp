@@ -1,6 +1,4 @@
-/**  mainjs.js
- * @author Binyan Chen
- */
+
 (function($)  
 {  
     jQuery.fn.setfocus = function()  
