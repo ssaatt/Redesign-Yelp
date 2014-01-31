@@ -41,11 +41,14 @@ A simple screen sketch for this level.
 References: 
 
 
-1) CSS 3, Card Flip (http://desandro.github.com/3dtransforms/docs/card-flip.html).
-2) Yelp API (http://www.yelp.com/developers/documentation/v2/overview).
 1)CSS 3, Card Flip (http://desandro.github.com/3dtransforms/docs/card-flip.html).
+
 2)Yelp API (http://www.yelp.com/developers/documentation/v2/overview).
+
 3)HTML5 Rocks Authors & Google, HTML5 Rocks (http://www.html5rocks.com/en/)
+
 4)jQuery (http://jquery.com/).
+
 5)JetBlue|Airline Tickets, Flights, and Airfare (http://www.jetblue.com/)
+
 6)While designing the layout of bookmarked items, got inspiration from the layout of Window 8.
