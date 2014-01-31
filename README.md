@@ -36,13 +36,9 @@ A simple screen sketch for this level.
 6) Release—Test Final Product, Make Minor Changes
 
 7) Wring Development Document, User manual and Making Video. 
-
-
-
-
-
-
-
+<br>
+<br>
+<br>
 
 References: 
 
