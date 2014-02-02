@@ -35,6 +35,7 @@ A simple screen sketch for this level.
 <img src="https://s3.amazonaws.com/js4153/8.png">
 <img src="https://s3.amazonaws.com/js4153/10.png">
 
+<br>
 5) Build—Implement the Final Design by Software
 
 6) Release—Test Final Product, Make Minor Changes
